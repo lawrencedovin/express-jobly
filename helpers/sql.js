@@ -4,6 +4,10 @@ const { BadRequestError } = require("../expressError");
 
 function sqlForPartialUpdate(dataToUpdate, jsToSql) {
 
+  // dataToUpdate is sending the whole object/data to be updated
+  // jsToSql is sending the updates of the parts of that whole object/data
+  // ???
+
   // const object1 = {
   //   a: 'somestring',
   //   b: 42,
@@ -27,8 +31,10 @@ function sqlForPartialUpdate(dataToUpdate, jsToSql) {
   // key value pairs from the db to update.
 
   // {firstName: 'Aliya', age: 32} => ['"first_name"=$1', '"age"=$2']
+  // setCols: '"Aliya"=$1, "lastName"=$2, "32"=$3' Working incorrect
   const cols = keys.map((colName, idx) =>
-      `"${jsToSql[colName] || colName}"=$${idx + 1}`,
+      // `"${jsToSql[colName] || colName}"=$${idx + 1}`,
+      `"${colName}"=$${idx + 1}`,
   );
 
 
@@ -40,6 +46,16 @@ function sqlForPartialUpdate(dataToUpdate, jsToSql) {
   //     isAdmin: "is_admin",
   //   });
   // const usernameVarIdx = "$" + (values.length + 1);
+
+  // const querySql = `UPDATE users 
+  //                     SET '"123"=$1, "idk"=$2, "isAdmin"=$3'
+  //                     // setCols should be working with table keys
+  //                     WHERE username = ${usernameVarIdx} 
+  //                     RETURNING username,
+  //                               first_name AS "firstName",
+  //                               last_name AS "lastName",
+  //                               email,
+  //                               is_admin AS "isAdmin"`;
 
   // const querySql = `UPDATE users 
   //                   SET ${setCols} 
@@ -63,4 +79,19 @@ function sqlForPartialUpdate(dataToUpdate, jsToSql) {
   };
 }
 
+let a = {
+  firstName: "lawrence",
+  lastName: "dovin",
+  age: 31,
+}
+
+let b = {
+  firstName: 'Aliya', 
+  age: 32
+}
+
+
+console.log(sqlForPartialUpdate(a, b));
+
 module.exports = { sqlForPartialUpdate };
+
