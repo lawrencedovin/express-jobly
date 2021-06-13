@@ -1,7 +1,5 @@
 const { BadRequestError } = require("../expressError");
 
-// THIS NEEDS SOME GREAT DOCUMENTATION.
-
 /**
  * Helper which is similar to a PATCH request to make partial updates 
  * gets JSON data and coverts it to an SQL format 
@@ -46,8 +44,6 @@ function sqlForPartialUpdate(dataToUpdate, jsToSql) {
     values: Object.values(dataToUpdate),
   };
 }
-
-console.log(sqlForPartialUpdate({firstName: 'Aliya', age: 32}, { firstName: "first_name" }));
 
 module.exports = { sqlForPartialUpdate };
 
