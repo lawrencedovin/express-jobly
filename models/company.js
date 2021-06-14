@@ -79,6 +79,33 @@ class Company {
       return companiesRes.rows;
     }
 
+  /** Find all companies where minEmployees query string is passed.
+   *
+   * Returns [{ handle, name, description, numEmployees, logoUrl }, ...]
+   * */
+
+       static async findAllMinEmployees(minEmployees) {
+        const companiesRes = await db.query(
+              `SELECT handle,
+                      name,
+                      description,
+                      num_employees AS "numEmployees",
+                      logo_url AS "logoUrl"
+               FROM companies
+               GROUP BY handle
+               HAVING MIN(num_employees) >= ${minEmployees}`);
+        return companiesRes.rows;
+      }
+
+// SELECT
+// 	customer_id,
+// 	MAX (amount)
+// FROM
+// 	payment
+// GROUP BY
+// 	customer_id
+// HAVING MAX(amount) > 8.99
+
   /** Given a company handle, return data about company.
    *
    * Returns { handle, name, description, numEmployees, logoUrl, jobs }
