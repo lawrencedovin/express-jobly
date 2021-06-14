@@ -66,7 +66,7 @@ class Company {
    * Returns [{ handle, name, description, numEmployees, logoUrl }, ...]
    * */
 
-     static async findAllName(name) {
+    static async findAllName(name) {
       const companiesRes = await db.query(
             `SELECT handle,
                     name,
@@ -84,19 +84,19 @@ class Company {
    * Returns [{ handle, name, description, numEmployees, logoUrl }, ...]
    * */
 
-       static async findAllMinEmployees(minEmployees) {
-        const companiesRes = await db.query(
-              `SELECT handle,
-                      name,
-                      description,
-                      num_employees AS "numEmployees",
-                      logo_url AS "logoUrl"
-               FROM companies
-               GROUP BY handle
-               HAVING MIN(num_employees) >= ${minEmployees}
-               ORDER BY num_employees ASC`);
-        return companiesRes.rows;
-      }
+    static async findAllMinMaxEmployees(minEmployees=0, maxEmployees=1000) {
+      const companiesRes = await db.query(
+            `SELECT handle,
+                    name,
+                    description,
+                    num_employees AS "numEmployees",
+                    logo_url AS "logoUrl"
+              FROM companies
+              GROUP BY handle
+              HAVING num_employees >= ${minEmployees} AND num_employees <= ${maxEmployees}
+              ORDER BY num_employees ASC`);
+      return companiesRes.rows;
+    }
 
   /** Given a company handle, return data about company.
    *
