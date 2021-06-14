@@ -54,7 +54,8 @@ router.get("/", async function (req, res, next) {
   try {
     const { name, minEmployees, maxEmployees } = req.query;
     console.log(`name value: ${name}, minEmployees value: ${minEmployees}, maxEmployees value :${maxEmployees}`);
-    const companies = await Company.findAll();
+    // const companies = await Company.findAll();
+    const companies = await Company.findAllName(name);
     return res.json({ companies });
   } catch (err) {
     return next(err);

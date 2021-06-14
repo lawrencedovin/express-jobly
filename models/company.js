@@ -61,6 +61,24 @@ class Company {
     return companiesRes.rows;
   }
 
+  /** Find all companies where name query string is passed.
+   *
+   * Returns [{ handle, name, description, numEmployees, logoUrl }, ...]
+   * */
+
+     static async findAllName(name) {
+      const companiesRes = await db.query(
+            `SELECT handle,
+                    name,
+                    description,
+                    num_employees AS "numEmployees",
+                    logo_url AS "logoUrl"
+             FROM companies
+             WHERE lower(name) LIKE '%${name}%'
+             ORDER BY name`);
+      return companiesRes.rows;
+    }
+
   /** Given a company handle, return data about company.
    *
    * Returns { handle, name, description, numEmployees, logoUrl, jobs }
