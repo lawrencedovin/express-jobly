@@ -22,4 +22,9 @@ describe("sqlForPartialUpdate", () => {
       values: ["lawrence", "peanut", 28]
     });
   });
+
+//   test("Bad request for missing data", () => {
+//     const result = sqlForPartialUpdate();
+//     expect(result.statusCode).toEqual(400);
+//   });
 });

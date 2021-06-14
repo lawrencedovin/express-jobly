@@ -27,8 +27,10 @@ const { BadRequestError } = require("../expressError");
 
 function sqlForPartialUpdate(dataToUpdate, jsToSql) {
   
-  
-  if (dataToUpdate === undefined || jsToSql === undefined || dataToUpdate === null || jsToSql === null) throw new BadRequestError("No data");
+  // If no values even an empty JS Object are passed in throws error
+  if (dataToUpdate === undefined || jsToSql === undefined || dataToUpdate === null || jsToSql === null) {
+    throw new BadRequestError("No data");
+  }
 
   // Gets all keys from JS Object which is used to 
   // help map the JS object to SQL format for the cols
