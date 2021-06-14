@@ -84,7 +84,7 @@ class Company {
    * Returns [{ handle, name, description, numEmployees, logoUrl }, ...]
    * */
 
-    static async findAllMinMaxEmployees(minEmployees=0, maxEmployees=1000) {
+    static async filterNameMinMaxEmployees(name='', minEmployees=0, maxEmployees=1000) {
       const companiesRes = await db.query(
             `SELECT handle,
                     name,
@@ -93,7 +93,9 @@ class Company {
                     logo_url AS "logoUrl"
               FROM companies
               GROUP BY handle
-              HAVING num_employees >= ${minEmployees} AND num_employees <= ${maxEmployees}
+              HAVING num_employees >= ${minEmployees} 
+              AND num_employees <= ${maxEmployees}
+              AND lower(name) LIKE '%${name}%'
               ORDER BY num_employees ASC`);
       return companiesRes.rows;
     }
