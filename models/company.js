@@ -66,18 +66,18 @@ class Company {
    * Returns [{ handle, name, description, numEmployees, logoUrl }, ...]
    * */
 
-    static async findAllName(name) {
-      const companiesRes = await db.query(
-            `SELECT handle,
-                    name,
-                    description,
-                    num_employees AS "numEmployees",
-                    logo_url AS "logoUrl"
-             FROM companies
-             WHERE lower(name) LIKE '%${name}%'
-             ORDER BY name`);
-      return companiesRes.rows;
-    }
+    // static async findAllName(name) {
+    //   const companiesRes = await db.query(
+    //         `SELECT handle,
+    //                 name,
+    //                 description,
+    //                 num_employees AS "numEmployees",
+    //                 logo_url AS "logoUrl"
+    //          FROM companies
+    //          WHERE lower(name) LIKE '%${name}%'
+    //          ORDER BY name`);
+    //   return companiesRes.rows;
+    // }
 
   /** Find all companies where minEmployees query string is passed.
    *
@@ -85,6 +85,9 @@ class Company {
    * */
 
     static async filterNameMinMaxEmployees(name='', minEmployees=0, maxEmployees=1000) {
+      if (minEmployees > maxEmployees) {
+        throw new BadRequestError(`minEmployees: ${minEmployees} cannot be greater than maxEmployees: ${maxEmployees}`);
+      }
       const companiesRes = await db.query(
             `SELECT handle,
                     name,
