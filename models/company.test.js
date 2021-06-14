@@ -132,7 +132,6 @@ describe("filterNameMinMaxEmployees", function () {
   test("works: minEmployees filter", async function () {
     const name = '';
     const minEmployees = 2;
-    // const maxEmployees = 1000;
     let companies = await Company.filterNameMinMaxEmployees(name, minEmployees);
     expect(companies).toEqual([
       {
@@ -172,6 +171,32 @@ describe("filterNameMinMaxEmployees", function () {
         logoUrl: "http://c2.img",
       },
     ]);
+  });
+  test("works: multiple filters", async function () {
+    const name = 'c1';
+    const minEmployees = 0;
+    const maxEmployees = 2;
+    let companies = await Company.filterNameMinMaxEmployees(name, minEmployees, maxEmployees);
+    expect(companies).toEqual([
+      {
+        handle: "c1",
+        name: "C1",
+        description: "Desc1",
+        numEmployees: 1,
+        logoUrl: "http://c1.img",
+      },
+    ]);
+  });
+  test("bad request with minEmployees being larger than maxEmployees", async function () {
+    const name = '';
+    const minEmployees = 3;
+    const maxEmployees = 2;
+    try {
+      await Company.filterNameMinMaxEmployees(name, minEmployees, maxEmployees);
+      fail();
+    } catch (err) {
+      expect(err instanceof BadRequestError).toBeTruthy();
+    }
   });
 });
 
