@@ -93,18 +93,10 @@ class Company {
                       logo_url AS "logoUrl"
                FROM companies
                GROUP BY handle
-               HAVING MIN(num_employees) >= ${minEmployees}`);
+               HAVING MIN(num_employees) >= ${minEmployees}
+               ORDER BY num_employees ASC`);
         return companiesRes.rows;
       }
-
-// SELECT
-// 	customer_id,
-// 	MAX (amount)
-// FROM
-// 	payment
-// GROUP BY
-// 	customer_id
-// HAVING MAX(amount) > 8.99
 
   /** Given a company handle, return data about company.
    *
