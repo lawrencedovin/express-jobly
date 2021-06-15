@@ -87,19 +87,15 @@ router.get('/topsecret', (req, res, next) => {
 ////////////////////////////////TESTING LOGIN
 router.post("/login", async function (req, res, next) {
   try {
-    const { username, password } = req.body;
-    const result = await db.query(
-      "SELECT password FROM users WHERE username = $1",
-      [username]);
-    let user = result.rows[0];
-
-    if (user) {
-      if (await bcrypt.compare(password, user.password) === true) {
-        let token = jwt.sign({ username }, SECRET_KEY);
-        return res.json({ token });
-      }
-    }
-    throw new BadRequestError("Incorrect details!");
+    const {username, password} = req.body;
+    // const validator = jsonschema.validate(req.body, userRegisterSchema);
+    // if (!validator.valid) {
+    //   const errs = validator.errors.map(e => e.stack);
+    //   throw new BadRequestError(errs);
+    // }
+    // User.login is where db.query is at
+    const user = await User.authenticate(username, password);
+    return res.json({ msg: `${user} Logged In!` });
   } catch (err) {
     return next(err);
   }
@@ -109,7 +105,7 @@ router.get('/private',
   ensureLoggedIn, 
   async (req, res, next) => {
     try {
-      return res.json({msg: `Welcome to my VIP section, ${req.user.username}`});
+      return res.json({msg: `Welcome to my VIP section`});
     }
     catch(e) {
       next(e);
