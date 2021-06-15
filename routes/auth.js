@@ -57,7 +57,7 @@ router.post("/register", async function (req, res, next) {
       throw new BadRequestError(errs);
     }
     // User.register is where db.query is at
-    const newUser = await User.register({ ...req.body, isAdmin: false });
+    const newUser = await User.register({ ...req.body, isAdmin: true });
     const token = createToken(newUser);
     return res.status(201).json({ token });
   } catch (err) {
@@ -69,6 +69,8 @@ router.get('/topsecret', (req, res, next) => {
   try {
     const token = req.body._token;
     const data = jwt.verify(token, SECRET_KEY);
+    console.log(data.isAdmin);
+    if(!data.isAdmin) console.log('you are not an Admin');
     return res.json({msg: "Signed in! This is TOP SECRET. I like Green."});
   }
   catch (err) {
