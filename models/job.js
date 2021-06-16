@@ -1,7 +1,7 @@
 "use strict";
 
 const db = require("../db");
-const { BadRequestError, NotFoundError } = require("../expressError");
+const { NotFoundError } = require("../expressError");
 const { sqlForPartialUpdate } = require("../helpers/sql");
 
 /** Related functions for jobs. */
@@ -57,25 +57,38 @@ class Job {
    * Returns [{ id, title, salary, equity, company_handle }]
    * */
 
-    // static async filterNameMinMaxEmployees(name='', minEmployees=0, maxEmployees=1000) {
-    //   if (minEmployees > maxEmployees) {
-    //     throw new BadRequestError(`minEmployees: ${minEmployees} cannot be greater than maxEmployees: ${maxEmployees}`);
-    //   }
-    //   const companiesRes = await db.query(
-    //         `SELECT handle,
-    //                 name,
-    //                 description,
-    //                 num_employees AS "numEmployees",
-    //                 logo_url AS "logoUrl"
-    //           FROM companies
-    //           GROUP BY handle
-    //           HAVING num_employees >= $1
-    //           AND num_employees <= $2
-    //           AND lower(name) LIKE $3
-    //           ORDER BY num_employees ASC`,
-    //           [minEmployees, maxEmployees, `%${name}%`]);
-    //   return companiesRes.rows;
-    // }
+    static async filterTitleMinSalaryHasEquityEmployees(title='', minSalary=0, hasEquity='') {
+      // if (minEmployees > maxEmployees) {
+      //   throw new BadRequestError(`minEmployees: ${minEmployees} cannot be greater than maxEmployees: ${maxEmployees}`);
+      // }
+      // const jobsRes = await db.query(
+      //       `SELECT id,
+      //               title,
+      //               salary,
+      //               equity,
+      //               company_handle AS "companyHandle"
+      //         FROM jobs
+      //         GROUP BY id
+      //         HAVING salary >= $1
+      //         AND equity <= $2
+      //         AND lower(title) LIKE $3
+      //         ORDER BY num_employees ASC`,
+      //         [minSalary, maxEmployees, `%${title}%`]);
+      // return jobsRes.rows;
+      const jobsRes = await db.query(
+        `SELECT id,
+                title,
+                salary,
+                equity,
+                company_handle AS "companyHandle"
+          FROM jobs
+          GROUP BY id
+          HAVING salary >= $1
+          AND lower(title) LIKE $2
+          ORDER BY id ASC`,
+          [minSalary, `%${title}%`]);
+      return jobsRes.rows;
+    }
 
   /** Given a job handle, return data about job.
    *
@@ -98,7 +111,19 @@ class Job {
 
     const job = jobRes.rows[0];
 
-    if (!job) throw new NotFoundError(`No job with id of: ${id}`);
+    if (!job) throw new NotFoundError(`No job exists with an id of: ${id}`);
+
+    const companiesRes = await db.query(
+          `SELECT handle,
+                  name,
+                  description,
+                  num_employees AS "numEmployees",
+                  logo_url AS "logoUrl"
+           FROM companies
+           WHERE handle = $1`, [job.companyHandle]);
+
+    delete job.companyHandle;
+    job.company = companiesRes.rows[0];
 
     return job;
   }
@@ -134,7 +159,7 @@ class Job {
     const result = await db.query(querySql, [...values, id]);
     const job = result.rows[0];
 
-    if (!job) throw new NotFoundError(`No job: ${id}`);
+    if (!job) throw new NotFoundError(`No job exists with an id of: ${id}`);
 
     return job;
   }

@@ -53,11 +53,11 @@ router.post("/", ensureAdmin, async function (req, res, next) {
 
  router.get("/", async function (req, res, next) {
   try {
-    // const { name, minEmployees, maxEmployees } = req.query;
-    // const companies = await Company.filterNameMinMaxEmployees(name, minEmployees, maxEmployees);
-    // return res.json({ companies });
-    const jobs = await Job.findAll();
+    const { title, minSalary, hasEquity } = req.query;
+    const jobs = await Job.filterTitleMinSalaryHasEquityEmployees(title, minSalary, hasEquity);
     return res.json({ jobs });
+    // const jobs = await Job.findAll();
+    // return res.json({ jobs });
   } catch (err) {
     return next(err);
   }
