@@ -7,58 +7,49 @@ const { sqlForPartialUpdate } = require("../helpers/sql");
 /** Related functions for jobs. */
 
 class Job {
-  /** Create a company (from data), update db, return new company data.
+  /** Create a job (from data), update db, return new company data.
    *
-   * data should be { handle, name, description, numEmployees, logoUrl }
+   * data should be { id, title, salary, equity, company_handle }
    *
-   * Returns { handle, name, description, numEmployees, logoUrl }
+   * Returns { id, title, salary, equity, company_handle }
    *
-   * Throws BadRequestError if company already in database.
+   * Throws BadRequestError if job already in database.
    * */
 
-  static async create({ handle, name, description, numEmployees, logoUrl }) {
-    const duplicateCheck = await db.query(
-          `SELECT handle
-           FROM companies
-           WHERE handle = $1`,
-        [handle]);
-
-    if (duplicateCheck.rows[0])
-      throw new BadRequestError(`Duplicate company: ${handle}`);
+  static async create({ title, salary, equity, companyHandle }) {
 
     const result = await db.query(
-          `INSERT INTO companies
-           (handle, name, description, num_employees, logo_url)
-           VALUES ($1, $2, $3, $4, $5)
-           RETURNING handle, name, description, num_employees AS "numEmployees", logo_url AS "logoUrl"`,
+          `INSERT INTO jobs
+           (title, salary, equity, company_handle)
+           VALUES ($1, $2, $3, $4)
+           RETURNING id, title, salary, equity, company_handle AS "companyHandle"`,
         [
-          handle,
-          name,
-          description,
-          numEmployees,
-          logoUrl,
+          title,
+          salary,
+          equity,
+          companyHandle,
         ],
     );
-    const company = result.rows[0];
+    const job = result.rows[0];
 
-    return company;
+    return job;
   }
 
-  /** Find all companies.
+  /** Find all jobs.
    *
    * Returns [{ handle, name, description, numEmployees, logoUrl }, ...]
    * */
 
   static async findAll() {
-    const companiesRes = await db.query(
+    const jobsRes = await db.query(
           `SELECT handle,
                   name,
                   description,
                   num_employees AS "numEmployees",
                   logo_url AS "logoUrl"
-           FROM companies
+           FROM jobs
            ORDER BY name`);
-    return companiesRes.rows;
+    return jobsRes.rows;
   }
 
   /** Filter all companies by name, minEmployees, maxEmployees query string.
@@ -168,4 +159,4 @@ class Job {
 }
 
 
-module.exports = Company;
+module.exports = Job;
