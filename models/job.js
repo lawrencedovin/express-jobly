@@ -52,41 +52,29 @@ class Job {
     return jobsRes.rows;
   }
 
-  /** Filter all jobs by title, salary, equity, company_handle query string.
+  /** Filter all jobs by title, minSalary, hasEquity, query string.
    *
    * Returns [{ id, title, salary, equity, company_handle }]
    * */
 
-    static async filterTitleMinSalaryHasEquityEmployees(title='', minSalary=0, hasEquity='') {
-      // if (minEmployees > maxEmployees) {
-      //   throw new BadRequestError(`minEmployees: ${minEmployees} cannot be greater than maxEmployees: ${maxEmployees}`);
-      // }
-      // const jobsRes = await db.query(
-      //       `SELECT id,
-      //               title,
-      //               salary,
-      //               equity,
-      //               company_handle AS "companyHandle"
-      //         FROM jobs
-      //         GROUP BY id
-      //         HAVING salary >= $1
-      //         AND equity <= $2
-      //         AND lower(title) LIKE $3
-      //         ORDER BY num_employees ASC`,
-      //         [minSalary, maxEmployees, `%${title}%`]);
-      // return jobsRes.rows;
+    static async filterTitleMinSalaryHasEquityEmployees(title='', minSalary=0, hasEquity=false) {
+      
+      let hasEquityConditional = (hasEquity) ? ">" : ">=";
+
       const jobsRes = await db.query(
-        `SELECT id,
-                title,
-                salary,
-                equity,
-                company_handle AS "companyHandle"
-          FROM jobs
-          GROUP BY id
-          HAVING salary >= $1
-          AND lower(title) LIKE $2
-          ORDER BY id ASC`,
-          [minSalary, `%${title}%`]);
+            `SELECT id,
+                    title,
+                    salary,
+                    equity,
+                    company_handle AS "companyHandle"
+              FROM jobs
+              GROUP BY id
+              HAVING salary >= $1
+              AND CAST (equity AS DOUBLE PRECISION) ${hasEquityConditional} 0.0
+              AND lower(title) LIKE $2
+              ORDER BY id ASC`,
+              [minSalary, `%${title}%`]);
+
       return jobsRes.rows;
     }
 
