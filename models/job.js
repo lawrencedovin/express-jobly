@@ -35,29 +35,12 @@ class Job {
     return job;
   }
 
-  /** Find all jobs.
-   *
-   * Returns [{ id, title, salary, equity, company_handle }]
-   * */
-
-  static async findAll() {
-    const jobsRes = await db.query(
-          `SELECT id, 
-                  title, 
-                  salary, 
-                  equity, 
-                  company_handle AS "companyHandle"
-           FROM jobs
-           ORDER BY id`);
-    return jobsRes.rows;
-  }
-
   /** Filter all jobs by title, minSalary, hasEquity, query string.
    *
    * Returns [{ id, title, salary, equity, company_handle }]
    * */
 
-    static async filterTitleMinSalaryHasEquityEmployees(title='', minSalary=0, hasEquity=false) {
+    static async findAll(title='', minSalary=0, hasEquity=false) {
       
       let hasEquityConditional = (hasEquity) ? ">" : ">=";
 
