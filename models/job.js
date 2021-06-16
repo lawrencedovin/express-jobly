@@ -42,13 +42,13 @@ class Job {
 
   static async findAll() {
     const jobsRes = await db.query(
-          `SELECT handle,
-                  name,
-                  description,
-                  num_employees AS "numEmployees",
-                  logo_url AS "logoUrl"
+          `SELECT id, 
+                  title, 
+                  salary, 
+                  equity, 
+                  company_handle AS "companyHandle"
            FROM jobs
-           ORDER BY name`);
+           ORDER BY id`);
     return jobsRes.rows;
   }
 
