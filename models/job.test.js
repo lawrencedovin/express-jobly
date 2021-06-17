@@ -80,19 +80,20 @@ describe("findAll", function () {
     ]);
   });
 
-//   test("works: by min salary", async function () {
-//     console.log(jobs);
-//     let jobs = await Job.findAll({ minSalary: 250 });
-//     expect(jobs).toEqual([
-//       {
-//         id: testJobIds[2],
-//         title: "Job3",
-//         salary: 300,
-//         equity: "0",
-//         companyHandle: "c1"
-//       },
-//     ]);
-//   });
+  test("works: by min salary", async function () {
+    const title = '';
+    const minSalary = 250;
+    let jobs = await Job.findAll(title, minSalary);
+    expect(jobs).toEqual([
+      {
+        id: testJobIds[2],
+        title: "Job3",
+        salary: 300,
+        equity: "0",
+        companyHandle: "c1"
+      },
+    ]);
+  });
 
 //   test("works: by equity", async function () {
 //     let jobs = await Job.findAll({ hasEquity: true });
@@ -124,20 +125,6 @@ describe("findAll", function () {
 //         title: "Job2",
 //         salary: 200,
 //         equity: "0.2",
-//         companyHandle: "c1",
-//         companyName: "C1",
-//       },
-//     ]);
-//   });
-
-//   test("works: by name", async function () {
-//     let jobs = await Job.findAll({ title: "ob1" });
-//     expect(jobs).toEqual([
-//       {
-//         id: testJobIds[0],
-//         title: "Job1",
-//         salary: 100,
-//         equity: "0.1",
 //         companyHandle: "c1",
 //         companyName: "C1",
 //       },
