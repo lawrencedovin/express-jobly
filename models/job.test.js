@@ -40,7 +40,6 @@ describe("create", function () {
 describe("findAll", function () {
   test("works: no filter", async function () {
     let jobs = await Job.findAll();
-    console.log(jobs);
     expect(jobs).toEqual([
       {
         id: testJobIds[0],
@@ -66,7 +65,23 @@ describe("findAll", function () {
     ]);
   });
 
+  test("works: by title", async function () {
+    const title = "ob1"
+    let jobs = await Job.findAll(title);
+    console.log(jobs);
+    expect(jobs).toEqual([
+        {
+          id: testJobIds[0],
+          title: "Job1",
+          salary: 100,
+          equity: "0.1",
+          companyHandle: "c1"
+        }
+    ]);
+  });
+
 //   test("works: by min salary", async function () {
+//     console.log(jobs);
 //     let jobs = await Job.findAll({ minSalary: 250 });
 //     expect(jobs).toEqual([
 //       {
@@ -74,8 +89,7 @@ describe("findAll", function () {
 //         title: "Job3",
 //         salary: 300,
 //         equity: "0",
-//         companyHandle: "c1",
-//         companyName: "C1",
+//         companyHandle: "c1"
 //       },
 //     ]);
 //   });
