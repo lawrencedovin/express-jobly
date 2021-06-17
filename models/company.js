@@ -44,29 +44,12 @@ class Company {
     return company;
   }
 
-  /** Find all companies.
-   *
-   * Returns [{ handle, name, description, numEmployees, logoUrl }, ...]
-   * */
-
-  static async findAll() {
-    const companiesRes = await db.query(
-          `SELECT handle,
-                  name,
-                  description,
-                  num_employees AS "numEmployees",
-                  logo_url AS "logoUrl"
-           FROM companies
-           ORDER BY name`);
-    return companiesRes.rows;
-  }
-
   /** Filter all companies by name, minEmployees, maxEmployees query string.
    *
    * Returns [{ handle, name, description, numEmployees, logoUrl }, ...]
    * */
 
-    static async filterNameMinMaxEmployees(name='', minEmployees=0, maxEmployees=1000) {
+    static async findAll(name='', minEmployees=0, maxEmployees=1000) {
       if (minEmployees > maxEmployees) {
         throw new BadRequestError(`minEmployees: ${minEmployees} cannot be greater than maxEmployees: ${maxEmployees}`);
       }

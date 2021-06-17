@@ -55,7 +55,6 @@ describe("create", function () {
     }
   });
 });
-
 /************************************** findAll */
 
 describe("findAll", function () {
@@ -85,40 +84,9 @@ describe("findAll", function () {
       },
     ]);
   });
-});
-
-/************************************** filterNameMinMaxEmployees */
-
-describe("filterNameMinMaxEmployees", function () {
-  test("works: no filter", async function () {
-    let companies = await Company.filterNameMinMaxEmployees();
-    expect(companies).toEqual([
-      {
-        handle: "c1",
-        name: "C1",
-        description: "Desc1",
-        numEmployees: 1,
-        logoUrl: "http://c1.img",
-      },
-      {
-        handle: "c2",
-        name: "C2",
-        description: "Desc2",
-        numEmployees: 2,
-        logoUrl: "http://c2.img",
-      },
-      {
-        handle: "c3",
-        name: "C3",
-        description: "Desc3",
-        numEmployees: 3,
-        logoUrl: "http://c3.img",
-      },
-    ]);
-  });
   test("works: name filter", async function () {
     const name = 'c1';
-    let companies = await Company.filterNameMinMaxEmployees(name);
+    let companies = await Company.findAll(name);
     expect(companies).toEqual([
       {
         handle: "c1",
@@ -132,7 +100,7 @@ describe("filterNameMinMaxEmployees", function () {
   test("works: minEmployees filter", async function () {
     const name = '';
     const minEmployees = 2;
-    let companies = await Company.filterNameMinMaxEmployees(name, minEmployees);
+    let companies = await Company.findAll(name, minEmployees);
     expect(companies).toEqual([
       {
         handle: "c2",
@@ -154,7 +122,7 @@ describe("filterNameMinMaxEmployees", function () {
     const name = '';
     const minEmployees = 0;
     const maxEmployees = 2;
-    let companies = await Company.filterNameMinMaxEmployees(name, minEmployees, maxEmployees);
+    let companies = await Company.findAll(name, minEmployees, maxEmployees);
     expect(companies).toEqual([
       {
         handle: "c1",
@@ -176,7 +144,7 @@ describe("filterNameMinMaxEmployees", function () {
     const name = 'c1';
     const minEmployees = 0;
     const maxEmployees = 2;
-    let companies = await Company.filterNameMinMaxEmployees(name, minEmployees, maxEmployees);
+    let companies = await Company.findAll(name, minEmployees, maxEmployees);
     expect(companies).toEqual([
       {
         handle: "c1",
@@ -192,7 +160,7 @@ describe("filterNameMinMaxEmployees", function () {
     const minEmployees = 3;
     const maxEmployees = 2;
     try {
-      await Company.filterNameMinMaxEmployees(name, minEmployees, maxEmployees);
+      await Company.findAll(name, minEmployees, maxEmployees);
       fail();
     } catch (err) {
       expect(err instanceof BadRequestError).toBeTruthy();
