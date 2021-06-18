@@ -116,6 +116,22 @@ describe("findAll", function () {
       },
     ]);
   });
+
+  test("works: by equity and minSalary", async function () {
+    const title = '';
+    const minSalary = 150;
+    const hasEquity = true;
+    let jobs = await Job.findAll(title, minSalary, hasEquity);
+    expect(jobs).toEqual([
+      {
+        id: testJobIds[1],
+        title: "Job2",
+        salary: 200,
+        equity: "0.2",
+        companyHandle: "c1"
+      },
+    ]);
+  });
 });
 
 /************************************** get */
