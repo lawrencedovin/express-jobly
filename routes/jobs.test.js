@@ -189,65 +189,65 @@ describe("GET /jobs/:id", function () {
 
 // /************************************** PATCH /jobs/:id */
 
-// describe("PATCH /jobs/:id", function () {
-//   test("works for admin", async function () {
-//     const resp = await request(app)
-//         .patch(`/jobs/${testJobIds[0]}`)
-//         .send({
-//           title: "J-New",
-//         })
-//         .set("authorization", `Bearer ${adminToken}`);
-//     expect(resp.body).toEqual({
-//       job: {
-//         id: expect.any(Number),
-//         title: "J-New",
-//         salary: 1,
-//         equity: "0.1",
-//         companyHandle: "c1",
-//       },
-//     });
-//   });
+describe("PATCH /jobs/:id", function () {
+  test("works for admin", async function () {
+    const resp = await request(app)
+        .patch(`/jobs/${testJobIds[0]}`)
+        .send({
+          title: "J-New",
+        })
+        .set("authorization", `Bearer ${adminToken}`);
+    expect(resp.body).toEqual({
+      job: {
+        id: expect.any(Number),
+        title: "J-New",
+        salary: 1,
+        equity: "0.1",
+        companyHandle: "c1",
+      },
+    });
+  });
 
-//   test("unauth for others", async function () {
-//     const resp = await request(app)
-//         .patch(`/jobs/${testJobIds[0]}`)
-//         .send({
-//           title: "J-New",
-//         })
-//         .set("authorization", `Bearer ${u1Token}`);
-//     expect(resp.statusCode).toEqual(401);
-//   });
+  test("unauth for others", async function () {
+    const resp = await request(app)
+        .patch(`/jobs/${testJobIds[0]}`)
+        .send({
+          title: "J-New",
+        })
+        .set("authorization", `Bearer ${u1Token}`);
+    expect(resp.statusCode).toEqual(401);
+  });
 
-//   test("not found on no such job", async function () {
-//     const resp = await request(app)
-//         .patch(`/jobs/0`)
-//         .send({
-//           handle: "new",
-//         })
-//         .set("authorization", `Bearer ${adminToken}`);
-//     expect(resp.statusCode).toEqual(400);
-//   });
+  test("not found on no such job", async function () {
+    const resp = await request(app)
+        .patch(`/jobs/0`)
+        .send({
+          handle: "new",
+        })
+        .set("authorization", `Bearer ${adminToken}`);
+    expect(resp.statusCode).toEqual(400);
+  });
 
-//   test("bad request on handle change attempt", async function () {
-//     const resp = await request(app)
-//         .patch(`/jobs/${testJobIds[0]}`)
-//         .send({
-//           handle: "new",
-//         })
-//         .set("authorization", `Bearer ${adminToken}`);
-//     expect(resp.statusCode).toEqual(400);
-//   });
+  test("bad request on handle change attempt", async function () {
+    const resp = await request(app)
+        .patch(`/jobs/${testJobIds[0]}`)
+        .send({
+          handle: "new",
+        })
+        .set("authorization", `Bearer ${adminToken}`);
+    expect(resp.statusCode).toEqual(400);
+  });
 
-//   test("bad request with invalid data", async function () {
-//     const resp = await request(app)
-//         .patch(`/jobs/${testJobIds[0]}`)
-//         .send({
-//           salary: "not-a-number",
-//         })
-//         .set("authorization", `Bearer ${adminToken}`);
-//     expect(resp.statusCode).toEqual(400);
-//   });
-// });
+  test("bad request with invalid data", async function () {
+    const resp = await request(app)
+        .patch(`/jobs/${testJobIds[0]}`)
+        .send({
+          salary: "not-a-number",
+        })
+        .set("authorization", `Bearer ${adminToken}`);
+    expect(resp.statusCode).toEqual(400);
+  });
+});
 
 // /************************************** DELETE /jobs/:id */
 
