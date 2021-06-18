@@ -251,31 +251,31 @@ describe("PATCH /jobs/:id", function () {
 
 // /************************************** DELETE /jobs/:id */
 
-// describe("DELETE /jobs/:id", function () {
-//   test("works for admin", async function () {
-//     const resp = await request(app)
-//         .delete(`/jobs/${testJobIds[0]}`)
-//         .set("authorization", `Bearer ${adminToken}`);
-//     expect(resp.body).toEqual({ deleted: testJobIds[0] });
-//   });
+describe("DELETE /jobs/:id", function () {
+  test("works for admin", async function () {
+    const resp = await request(app)
+        .delete(`/jobs/${testJobIds[0]}`)
+        .set("authorization", `Bearer ${adminToken}`);
+    expect(resp.statusCode).toEqual(200);
+  });
 
-//   test("unauth for others", async function () {
-//     const resp = await request(app)
-//         .delete(`/jobs/${testJobIds[0]}`)
-//         .set("authorization", `Bearer ${u1Token}`);
-//     expect(resp.statusCode).toEqual(401);
-//   });
+  test("unauth for others", async function () {
+    const resp = await request(app)
+        .delete(`/jobs/${testJobIds[0]}`)
+        .set("authorization", `Bearer ${u1Token}`);
+    expect(resp.statusCode).toEqual(401);
+  });
 
-//   test("unauth for anon", async function () {
-//     const resp = await request(app)
-//         .delete(`/jobs/${testJobIds[0]}`);
-//     expect(resp.statusCode).toEqual(401);
-//   });
+  test("unauth for anon", async function () {
+    const resp = await request(app)
+        .delete(`/jobs/${testJobIds[0]}`);
+    expect(resp.statusCode).toEqual(401);
+  });
 
-//   test("not found for no such job", async function () {
-//     const resp = await request(app)
-//         .delete(`/jobs/0`)
-//         .set("authorization", `Bearer ${adminToken}`);
-//     expect(resp.statusCode).toEqual(404);
-//   });
-// });
+  test("not found for no such job", async function () {
+    const resp = await request(app)
+        .delete(`/jobs/0`)
+        .set("authorization", `Bearer ${adminToken}`);
+    expect(resp.statusCode).toEqual(404);
+  });
+});
