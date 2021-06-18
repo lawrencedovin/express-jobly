@@ -43,6 +43,7 @@ class Job {
     static async findAll(title='', minSalary=0, hasEquity=false) {
       
       let hasEquityConditional = (hasEquity) ? ">" : ">=";
+      minSalary = parseInt(minSalary);
 
       const jobsRes = await db.query(
             `SELECT id,
