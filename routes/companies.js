@@ -54,7 +54,7 @@ router.post("/", ensureAdmin, async function (req, res, next) {
  router.get("/", async function (req, res, next) {
   try {
     const { name, minEmployees, maxEmployees } = req.query;
-    const companies = await Company.filterNameMinMaxEmployees(name, minEmployees, maxEmployees);
+    const companies = await Company.findAll(name, minEmployees, maxEmployees);
     return res.json({ companies });
   } catch (err) {
     return next(err);

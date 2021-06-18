@@ -53,7 +53,9 @@ router.post("/", ensureAdmin, async function (req, res, next) {
 
  router.get("/", async function (req, res, next) {
   try {
+    
     const { title, minSalary, hasEquity } = req.query;
+
     const jobs = await Job.findAll(title, minSalary, hasEquity);
     return res.json({ jobs });
   } catch (err) {
